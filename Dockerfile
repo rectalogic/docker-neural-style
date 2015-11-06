@@ -19,19 +19,16 @@ RUN git clone https://github.com/torch/distro.git ~/torch --recursive && \
   (cd ~/torch; ./install.sh)
 
 # neural-style
-RUN git clone --depth 1 https://github.com/jcjohnson/neural-style.git ~/neural-style && \
-  (cd ~/neural-style; bash models/download_models.sh)
 RUN /root/torch/install/bin/luarocks install loadcaffe
 
 # Export environment variables manually
-ENV LUA_PATH='/root/neural-style/?.lua;/root/.luarocks/share/lua/5.1/?.lua;/root/.luarocks/share/lua/5.1/?/init.lua;/root/torch/install/share/lua/5.1/?.lua;/root/torch/install/share/lua/5.1/?/init.lua;./?.lua;/root/torch/install/share/luajit-2.1.0-alpha/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua' \
+ENV LUA_PATH='/neural-style/?.lua;/root/.luarocks/share/lua/5.1/?.lua;/root/.luarocks/share/lua/5.1/?/init.lua;/root/torch/install/share/lua/5.1/?.lua;/root/torch/install/share/lua/5.1/?/init.lua;./?.lua;/root/torch/install/share/luajit-2.1.0-alpha/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua' \
   LUA_CPATH='/root/.luarocks/lib/lua/5.1/?.so;/root/torch/install/lib/lua/5.1/?.so;./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so' \
   PATH=/root/torch/install/bin:$PATH \
   LD_LIBRARY_PATH=/root/torch/install/lib:$LD_LIBRARY_PATH \
   DYLD_LIBRARY_PATH=/root/torch/install/lib:$DYLD_LIBRARY_PATH
 
-WORKDIR /root/neural-style/outputs
-VOLUME /root/neural-style/images
-VOLUME /root/neural-style/outputs
+WORKDIR /neural-style
+VOLUME /neural-style
 
-ENTRYPOINT ["/root/torch/install/bin/th", "/root/neural-style/neural_style.lua"]
+ENTRYPOINT ["/root/torch/install/bin/th", "/neural-style/neural_style.lua"]
